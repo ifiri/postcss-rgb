@@ -21,17 +21,21 @@ module.exports = postcss.plugin('postcss-rgb', options => {
                     if (clrName) { clr = clrName; }
                     clrHex = util.hexToRGB(clr);
                     clr = (clrHex)? clrHex : {r: '204', g: '204', b: '204'};
+
                     return `rgba(${clr.r}, ${clr.g}, ${clr.b}${alpha})`;
                 });
 
                 // parse rgb values
                 decl.value = decl.value.replace(/rgb\(([^\,\)]+)\)/ig, (str, clr) => {
+                    const prefix = !options.suppressRgbPrefix && 'rgb';
+
                     clr = clr.trim();
                     clrName = util.nameToHex(clr);
                     if (clrName) { clr = clrName; }
                     clrHex = util.hexToRGB(clr);
                     clr = (clrHex)? clrHex : {r: '204', g: '204', b: '204'};
-                    return `rgb(${clr.r}, ${clr.g}, ${clr.b})`;
+
+                    return `${prefix}(${clr.r}, ${clr.g}, ${clr.b})`;
                 });
             }
         });
